@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Get } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { AppResponse } from 'src/common/response/app.response';
 
 @Controller('users')
 export class UsersController {
@@ -15,6 +16,11 @@ export class UsersController {
   @Get()
   async findAll() {
     const data = await this.usersService.findAll();
-    return data;
+    return new AppResponse({
+      message: 'Users retrieved successfully',
+      statusCode: 200,
+      result: 'success',
+      data,
+    });
   }
 }

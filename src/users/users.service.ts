@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './users.repository';
 import { BcryptService } from 'src/common/bcrypt/bcrypt.service';
-import { ResponseUser } from './dto/response-user.dto';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -11,7 +11,7 @@ export class UsersService {
     private readonly bcryptService: BcryptService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<ResponseUser> {
+  async create(createUserDto: CreateUserDto): Promise<UserDto> {
     const usernameExists = await this.usersRepository.findByUsername(
       createUserDto.username,
     );
@@ -46,7 +46,7 @@ export class UsersService {
     };
   }
 
-  async findAll(): Promise<ResponseUser[]> {
+  async findAll(): Promise<UserDto[]> {
     const users = await this.usersRepository.findAll();
     return users.map((user) => ({
       id: user.external_id,

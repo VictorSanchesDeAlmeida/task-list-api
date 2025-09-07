@@ -77,4 +77,22 @@ export class UsersRepository {
 
     return user;
   }
+
+  async findById(external_id: string): Promise<User | null> {
+    const user = await this.prisma.users.findFirst({
+      where: { external_id },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        first_name: true,
+        last_name: true,
+        external_id: true,
+        create_at: true,
+        password: true,
+      },
+    });
+
+    return user;
+  }
 }
