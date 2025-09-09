@@ -8,15 +8,15 @@ datasource db {
 }
 
 model users {
-  id          Int           @id(map: "users_pk") @default(autoincrement())
-  username    String        @unique(map: "users_username_unique") @db.VarChar(50)
-  first_name  String        @db.VarChar(50)
-  last_name   String        @db.VarChar(50)
-  password    String        @db.VarChar(255)
-  external_id String        @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email       String        @unique(map: "users_email_unique") @db.VarChar(255)
-  create_at   DateTime      @default(now()) @db.Timestamp(6)
-  users_tasks users_tasks[]
+  id          Int      @id(map: "users_pk") @default(autoincrement())
+  username    String   @unique(map: "users_username_unique") @db.VarChar(50)
+  first_name  String   @db.VarChar(50)
+  last_name   String   @db.VarChar(50)
+  password    String   @db.VarChar(255)
+  external_id String   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email       String   @unique(map: "users_email_unique") @db.VarChar(255)
+  create_at   DateTime @default(now()) @db.Timestamp(6)
+  tasks       tasks[]
 }
 
 model category {
@@ -25,19 +25,13 @@ model category {
 }
 
 model tasks {
-  id               Int           @id(map: "tasks_pk") @default(autoincrement())
-  title            String        @db.VarChar(100)
-  description      String        @db.VarChar(500)
-  planned_end_date DateTime?     @db.Timestamp(6)
-  actual_end_date  DateTime?     @db.Timestamp(6)
-  create_at        DateTime      @default(now()) @db.Timestamp(6)
-  users_tasks      users_tasks[]
-}
-
-model users_tasks {
-  id      Int   @id(map: "users_tasks_pk") @default(autoincrement())
-  id_user Int
-  id_task Int
-  tasks   tasks @relation(fields: [id_task], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_tasks_tasks_fk")
-  users   users @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_tasks_users_fk")
+  id               Int       @id(map: "tasks_pk") @default(autoincrement())
+  title            String    @db.VarChar(100)
+  description      String    @db.VarChar(500)
+  planned_end_date DateTime? @db.Timestamp(6)
+  actual_end_date  DateTime? @db.Timestamp(6)
+  create_at        DateTime  @default(now()) @db.Timestamp(6)
+  user_id          Int
+  is_favorite      Boolean   @default(false)
+  users            users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tasks_users_fk")
 }
