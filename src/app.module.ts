@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthGuard } from './common/guard/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { CategoryModule } from './category/category.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CategoryModule } from './category/category.module';
     UsersModule,
     SessionModule,
     CategoryModule,
+    TasksModule,
   ],
   controllers: [],
   providers: [

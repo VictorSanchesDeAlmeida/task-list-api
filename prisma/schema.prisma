@@ -20,8 +20,9 @@ model users {
 }
 
 model category {
-  id   Int    @id(map: "category_pk") @default(autoincrement())
-  name String @unique(map: "category_unique") @db.VarChar(50)
+  id    Int     @id(map: "category_pk") @default(autoincrement())
+  name  String  @unique(map: "category_unique") @db.VarChar(50)
+  tasks tasks[]
 }
 
 model tasks {
@@ -33,5 +34,7 @@ model tasks {
   create_at        DateTime  @default(now()) @db.Timestamp(6)
   user_id          Int
   is_favorite      Boolean   @default(false)
+  category_id      Int
+  category         category  @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tasks_category_fk")
   users            users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tasks_users_fk")
 }
