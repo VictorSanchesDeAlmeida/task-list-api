@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './users.repository';
 import { BcryptService } from 'src/common/bcrypt/bcrypt.service';
 import { UserDto } from './dto/user.dto';
+import AppError from 'src/common/response/app.error';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +18,11 @@ export class UsersService {
     );
 
     if (usernameExists) {
-      throw new Error('User already exists');
+      throw new AppError({
+        statusCode: 400,
+        message: 'Username já em uso',
+        error: 'Bad Request',
+      });
     }
 
     const emailExists = await this.usersRepository.findByEmail(
@@ -25,7 +30,11 @@ export class UsersService {
     );
 
     if (emailExists) {
-      throw new Error('Email already exists');
+      throw new AppError({
+        statusCode: 400,
+        message: 'Email já em uso',
+        error: 'Bad Request',
+      });
     }
 
     const hashedPassword = await this.bcryptService.hashPassword(
